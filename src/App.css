@@ -1,0 +1,791 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1d2634;
+  color: #9e9ea4;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.icon {
+  vertical-align: middle;
+  line-height: 1px;
+  font-size: 20px;
+}
+.icon_header {
+  vertical-align: middle;
+  line-height: 1px;
+  font-size: 26px;
+}
+.icon, .icon_header {
+  margin-right: 5px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 350px 1fr; /* Increase sidebar width */
+  grid-template-rows: 0.2fr 3fr;
+  grid-template-areas:
+    'header header'
+    'sidebar main';
+  height: 100vh;
+}
+
+.grid-container.collapsed {
+  grid-template-columns: 30px 1fr;
+}
+
+/* Header  */
+.header {
+  grid-area: header;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 0 30px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.menu-icon {
+  display: none;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-list {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin-left:350px; /* Adjust margin to move items to the right */
+}
+
+.header-list-item {
+  position: relative; /* Ensure dropdown is positioned relative to the parent */
+  margin-right: 20px;
+}
+
+.header-list-item > a {
+  text-decoration: none;
+  color: #9e9ea4;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #263043;
+  list-style-type: none;
+  padding: 10px 0;
+  margin: 0;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 10px 20px;
+  color: #9e9ea4;
+}
+
+.dropdown-item > a {
+  text-decoration: none;
+  color: #9e9ea4;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.categories-toggle {
+  display: none;
+}
+
+/* End Header  */
+
+/* Sidebar */
+.sidebar-container {
+  display: flex;
+  align-items: stretch;
+}
+
+.sidebar {
+  background-color: #263043;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  transition: width 0.3s;
+  width: 330px; /* Increase sidebar width */
+  position: relative; /* Ensure relative positioning for sticky elements */
+}
+
+.sidebar.collapsed {
+  width: 0;
+}
+
+.sidebar-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  background-color: #263043;
+  cursor: pointer;
+  z-index: 1000; /* Ensure the toggle button is always on top */
+}
+
+.sidebar-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-list-item {
+  padding: 15px;
+  color: #9e9ea4;
+  cursor: pointer;
+}
+
+.sidebar-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.shipment-details {
+  padding: 15px;
+  color: #9e9ea4;
+}
+
+.tracker-list-wrapper {
+  position: relative; /* Ensure proper positioning for the wrapper */
+  padding: 0; /* Remove padding to avoid extra space */
+  background-color: #263043; /* Match the sidebar background */
+  z-index: 10; /* Ensure it stays above other elements */
+  border-bottom: 1px solid #ccc; /* Optional: Add a separator */
+  height: 350px; /* Set a fixed height for the wrapper */
+  flex-shrink: 0; /* Prevent shrinking when other content changes */
+}
+
+.tracker-list-header {
+  position: sticky; /* Keep the header fixed */
+  top: 0; /* Stick to the top of the wrapper */
+  background-color: #263043; /* Match the sidebar background */
+  z-index: 20; /* Ensure it stays above the scrollable content */
+  padding: 15px;
+  border-bottom: 1px solid #ccc; /* Optional: Add a separator */
+}
+
+.tracker-list-scrollable {
+  height: 100%; /* Ensure it fills the wrapper's height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 10px;
+  background-color: #263043; /* Match the sidebar background */
+  scrollbar-width: thin; /* For Firefox: Make the scrollbar thinner */
+  scrollbar-color: #888 #444; /* For Firefox: Set scrollbar colors */
+}
+
+.tracker-list-scrollable::-webkit-scrollbar {
+  width: 8px; /* For WebKit browsers: Set scrollbar width */
+}
+
+.tracker-list-scrollable::-webkit-scrollbar-thumb {
+  background-color: #888; /* Set scrollbar thumb color */
+  border-radius: 4px; /* Round the scrollbar thumb */
+}
+
+.tracker-list-scrollable::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Darken the scrollbar thumb on hover */
+}
+
+.tracker-list-scrollable::-webkit-scrollbar-track {
+  background-color: #444; /* Set scrollbar track color */
+}
+
+.tab-navigation {
+  position: sticky; /* Make the tab-navigation sticky */
+  bottom: 0; /* Stick to the bottom of the sidebar */
+  background-color: #263043;
+  z-index: 10; /* Ensure it stays above other elements */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Optional shadow for better visibility */
+}
+
+.tab-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /* Change to horizontal layout */
+  flex-direction: row; /* Change to horizontal layout */
+  flex-wrap: wrap; /* Allow wrapping if needed */
+}
+
+.tab-item {
+  padding: 10px;
+  color: #9e9ea4;
+  cursor: pointer;
+  flex: 1; /* Distribute space evenly */
+  text-align: center; /* Center text */
+}
+
+.tab-item.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.tab-content {
+  margin-top: 20px;
+  color: #9e9ea4;
+  flex-grow: 1; /* Ensure it grows to fill available space */
+  overflow-y: auto; /* Allow vertical scrolling for tab content */
+  max-height: calc(90vh - 350px); /* Limit height to prevent overlapping with Registered Trackers */
+  padding: 10px; /* Add padding for better spacing */
+  scrollbar-width: thin; /* For Firefox: Make the scrollbar thinner */
+  scrollbar-color: #888 #444; /* For Firefox: Set scrollbar colors */
+}
+
+.tab-content::-webkit-scrollbar {
+  width: 8px; /* For WebKit browsers: Set scrollbar width */
+}
+
+.tab-content::-webkit-scrollbar-thumb {
+  background-color: #888; /* Set scrollbar thumb color */
+  border-radius: 4px; /* Round the scrollbar thumb */
+}
+
+.tab-content::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Darken the scrollbar thumb on hover */
+}
+
+.tab-content::-webkit-scrollbar-track {
+  background-color: #444; /* Set scrollbar track color */
+}
+
+/* End Sidebar */
+
+/* Main  */  
+.main-container {
+  grid-area: main;
+  overflow-y: auto;
+  padding: 20px 20px;
+  color: rgba(255, 255, 255, 0.95);
+  transition: margin-left 0.3s; /* Add transition for smooth resizing */
+}
+
+.grid-container.collapsed .main-container {
+  margin-left: 30px; /* Adjust margin when sidebar is collapsed */
+}
+
+.main-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+  margin: 15px 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+.card:first-child {
+  background-color: #2962ff;
+}
+
+.card:nth-child(2) {
+  background-color: #ff6d00;
+}
+
+.card:nth-child(3) {
+  background-color: #2e7d32;
+}
+
+.card:nth-child(4) {
+  background-color: #d50000;
+}
+
+.card-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-inner > .card_icon {
+  font-size: 25px;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px; /* Adjust margin to reduce space */
+  height: 300px;
+}
+
+.map-container {
+  margin: 20px 0;
+  z-index: 1; /* Ensure the map is below the sidebar */
+}
+
+/* End Main  */
+
+/* Shipments Page */
+.shipments-container {
+  display: flex;
+  height: 100vh;
+  position: relative;
+}
+
+.left-panel {
+  width: 400px;
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden; /* Remove horizontal scrollbar */
+  transition: width 0.3s;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #263043;
+  z-index: 1000;
+  box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+.left-panel.collapsed {
+  width: 30px; /* Adjust width when collapsed */
+  padding: 20px 5px; /* Adjust padding when collapsed */
+}
+
+.left-panel-toggle {
+  position: absolute;
+  top: 50%;
+  right: -15px;
+  transform: translateY(-50%);
+  background-color: #263043;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.right-panel {
+  width: 50%;
+  height: 100%;
+}
+
+.search-bar input {
+  width: calc(100% - 20px); /* Adjust width to account for padding */
+  padding: 10px;
+  margin-bottom: 20px;
+  box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  background-color: #263043;
+  color: #9e9ea4;
+  border: none;
+}
+
+.tab.active {
+  background-color: #1d2634;
+}
+
+.dropdowns {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.dropdowns select {
+  flex: 1;
+  padding: 10px;
+}
+
+.shipments-table {
+  overflow-x: auto;
+}
+
+.shipments-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.shipments-table th, .shipments-table td {
+  padding: 10px;
+  border: 1px solid #9e9ea4;
+  text-align: left;
+}
+
+.shipments-map-container {
+  flex: 1;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0; /* Ensure the map is below the left panel */
+}
+
+/* End Shipments Page */
+
+/* Trackers Page */
+.trackers-container {
+  display: flex;
+  height: 100vh;
+  position: relative;
+}
+
+.left-panel {
+  width: 400px;
+  padding: 20px;
+  overflow-y: auto;
+  transition: width 0.3s;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #263043;
+  z-index: 1000;
+}
+
+.left-panel.collapsed {
+  width: 30px;
+  padding: 20px 5px;
+}
+
+.left-panel-toggle {
+  position: absolute;
+  top: 50%;
+  right: -15px;
+  transform: translateY(-50%);
+  background-color: #263043;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.create-button {
+  background-color: blue;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.create-button:hover {
+  background-color: darkblue;
+}
+
+.register-button {
+  background-color: green;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.register-button:hover {
+  background-color: darkgreen;
+}
+
+.register-button-navbar {
+  background-color: green;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.register-button-navbar:hover {
+  background-color: darkgreen;
+}
+
+.trackers-table {
+  overflow-x: auto;
+}
+
+.trackers-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.trackers-table th, .trackers-table td {
+  padding: 10px;
+  border: 1px solid #9e9ea4;
+  text-align: left;
+}
+
+.trackers-table .clickable {
+  color: #007bff;
+  cursor: pointer;
+}
+
+.trackers-table .clickable:hover {
+  text-decoration: underline;
+}
+
+.pagination {
+  margin-top: 10px;
+  text-align: center;
+  color: #9e9ea4;
+}
+
+.trackers-map-container {
+  flex: 1;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
+
+/* End Trackers Page */
+
+/* Tracker Registration Form */
+.tracker-form {
+  background-color: #263043;
+  padding: 20px;
+  border-radius: 5px;
+  color: #9e9ea4;
+}
+
+.tracker-form h2 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #9e9ea4;
+  border-radius: 5px;
+  background-color: #1d2634;
+  color: white;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.cancel-button {
+  background-color: red;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: darkred;
+}
+
+.register-button {
+  background-color: green;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.register-button:hover {
+  background-color: darkgreen;
+}
+/* End Tracker Registration Form */
+
+/* Shipment Creation Form */
+.shipment-form {
+  background-color: #263043;
+  padding: 20px;
+  border-radius: 5px;
+  color: #9e9ea4;
+}
+
+.shipment-form h2 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.leg-section {
+  margin-bottom: 20px;
+  border: 1px solid #9e9ea4;
+  padding: 50px;
+  border-radius: 5px;
+}
+
+.leg-section h3 {
+  margin-bottom: 15px;
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #9e9ea4;
+  border-radius: 5px;
+  background-color: #1d2634;
+  color: white;
+}
+
+.add-leg-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.add-leg-button:hover {
+  background-color: #0056b3;
+}
+
+
+.cancel-button {
+  background-color: red;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: darkred;
+}
+
+.submit-button {
+  background-color: green;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: darkgreen;
+}
+/* End Shipment Creation Form */
+
+/* Medium <= 992px */
+  
+@media screen and (max-width: 992px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      'header'
+      'main';
+  }
+
+  .header-list {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #263043;
+    z-index: 10;
+  }
+
+  .header-list.show {
+    display: flex;
+  }
+
+  .header-list-item {
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  .categories-toggle {
+    display: block;
+    cursor: pointer;
+  }
+
+  .sidebar {
+    display: none;
+  }
+}
+/* Small <= 768px */
+  
+@media screen and (max-width: 768px) {
+  .main-cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+
+  .charts {
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+  }
+}
+
+/* Extra Small <= 576px */
+
+@media screen and (max-width: 576px) {
+  .header-left {
+    display: none;
+  }
+}
