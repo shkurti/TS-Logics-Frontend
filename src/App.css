@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #1d2634;
+  background-color: #ffffff;
   color: #9e9ea4;
   font-family: 'Montserrat', sans-serif;
 }
@@ -43,6 +43,9 @@ body {
   justify-content: space-between;
   padding: 0 30px 0 30px;
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+  background-color: #ffffff; /* Set Navbar background to white */
+  color: #000000; /* Adjust text color for better contrast */
+  border-bottom: 1px solid #e0e0e0; /* Optional: Add a border for separation */
 }
 
 .menu-icon {
@@ -71,6 +74,20 @@ body {
   color: #9e9ea4;
   display: flex;
   align-items: center;
+  padding: 8px 12px; /* Add padding for better spacing */
+  border-radius: 6px; /* Add rounded corners */
+  transition: background-color 0.3s, color 0.3s; /* Smooth hover effects */
+}
+
+.header-list-item > a:hover {
+  background-color: #e0f7fa; /* Light blue hover effect */
+  color: #007bff; /* Change text color on hover */
+}
+
+.header-list-item > a.active {
+  background-color: #007bff; /* Blue background for active link */
+  color: #ffffff; /* White text for active link */
+  font-weight: bold; /* Make active link text bold */
 }
 
 .dropdown-menu {
@@ -83,6 +100,8 @@ body {
   margin: 0;
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
   z-index: 1000;
+  border-radius: 6px; /* Add rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
 }
 
 .dropdown-item {
@@ -93,10 +112,14 @@ body {
 .dropdown-item > a {
   text-decoration: none;
   color: #9e9ea4;
+  padding: 8px 12px; /* Add padding for better spacing */
+  border-radius: 4px; /* Add rounded corners */
+  transition: background-color 0.3s, color 0.3s; /* Smooth hover effects */
 }
 
-.dropdown-item:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+.dropdown-item > a:hover {
+  background-color: #e0f7fa; /* Light blue hover effect */
+  color: #007bff; /* Change text color on hover */
 }
 
 .header-right {
@@ -117,12 +140,14 @@ body {
 }
 
 .sidebar {
-  background-color: #263043;
+  background-color: #ffffff; /* Set Sidebar background to white */
   height: calc(100vh - 60px);
   overflow-y: auto;
   transition: width 0.3s;
   width: 330px; /* Increase sidebar width */
   position: relative; /* Ensure relative positioning for sticky elements */
+  color: #000000; /* Adjust text color for better contrast */
+  border-right: 1px solid #e0e0e0; /* Optional: Add a border for separation */
 }
 
 .sidebar.collapsed {
@@ -134,7 +159,7 @@ body {
   align-items: center;
   justify-content: center;
   width: 20px;
-  background-color: #263043;
+  background-color: #ffffff;
   cursor: pointer;
   z-index: 1000; /* Ensure the toggle button is always on top */
 }
@@ -163,29 +188,73 @@ body {
 .tracker-list-wrapper {
   position: relative; /* Ensure proper positioning for the wrapper */
   padding: 0; /* Remove padding to avoid extra space */
-  background-color: #263043; /* Match the sidebar background */
+  background-color: #ffffff; /* Set Tracker List background to white */
   z-index: 10; /* Ensure it stays above other elements */
   border-bottom: 1px solid #ccc; /* Optional: Add a separator */
   height: 350px; /* Set a fixed height for the wrapper */
   flex-shrink: 0; /* Prevent shrinking when other content changes */
+  border: 1px solid #e0e0e0; /* Optional: Add a border for separation */
+  border-radius: 8px; /* Add rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+  overflow: hidden; /* Ensure content stays within rounded corners */
+}
+
+.tracker-item {
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Center content vertically */
+  justify-content: space-between; /* Space out content */
+  padding: 10px 15px; /* Add padding for spacing */
+  border-bottom: 1px solid #e0e0e0; /* Add a separator between items */
+  background-color: #ffffff; /* Set background to white */
+  transition: background-color 0.3s, transform 0.2s; /* Add smooth hover effects */
+  cursor: pointer; /* Indicate clickable items */
+}
+
+.tracker-item:last-child {
+  border-bottom: none; /* Remove border for the last item */
+}
+
+.tracker-item:hover {
+  background-color: #f5f5f5; /* Light gray hover effect */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.tracker-item.selected {
+  background-color: #e0f7fa; /* Highlight selected item */
+  border-left: 4px solid #007bff; /* Add a blue accent for selection */
+}
+
+.tracker-item p {
+  margin: 0; /* Remove default margin */
+  font-size: 14px; /* Adjust font size */
+  color: #333333; /* Set text color to dark gray */
+  font-weight: 500; /* Slightly bold text */
+}
+
+.tracker-item .tracker-status {
+  font-size: 12px; /* Smaller font for status */
+  color: #666666; /* Lighter gray for status text */
 }
 
 .tracker-list-header {
   position: sticky; /* Keep the header fixed */
   top: 0; /* Stick to the top of the wrapper */
-  background-color: #263043; /* Match the sidebar background */
+  background-color: #ffffff; /* Set Tracker List Header background to white */
   z-index: 20; /* Ensure it stays above the scrollable content */
   padding: 15px;
   border-bottom: 1px solid #ccc; /* Optional: Add a separator */
+  color: #000000; /* Adjust text color for better contrast */
+  border-bottom: 1px solid #e0e0e0; /* Optional: Add a border for separation */
 }
 
 .tracker-list-scrollable {
   height: 68%; /* Ensure it fills the wrapper's height */
   overflow-y: auto; /* Enable vertical scrolling */
   padding: 10px;
-  background-color: #263043; /* Match the sidebar background */
+  background-color: #ffffff; /* Set Tracker List Scrollable background to white */
   scrollbar-width: thin; /* For Firefox: Make the scrollbar thinner */
   scrollbar-color: #888 #444; /* For Firefox: Set scrollbar colors */
+  color: #000000; /* Adjust text color for better contrast */
 }
 
 .tracker-list-scrollable::-webkit-scrollbar {
@@ -208,9 +277,11 @@ body {
 .tab-navigation {
   position: sticky; /* Make the tab-navigation sticky */
   bottom: 0; /* Stick to the bottom of the sidebar */
-  background-color: #263043;
+  background-color: #ffffff; /* Set Tab Navigation background to white */
   z-index: 10; /* Ensure it stays above other elements */
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Optional shadow for better visibility */
+  color: #000000; /* Adjust text color for better contrast */
+  border-top: 1px solid #e0e0e0; /* Optional: Add a border for separation */
 }
 
 .tab-list {
@@ -220,6 +291,7 @@ body {
   display: flex; /* Change to horizontal layout */
   flex-direction: row; /* Change to horizontal layout */
   flex-wrap: wrap; /* Allow wrapping if needed */
+  border-bottom: 1px solid #e0e0e0; /* Add a bottom border for separation */
 }
 
 .tab-item {
@@ -228,21 +300,37 @@ body {
   cursor: pointer;
   flex: 1; /* Distribute space evenly */
   text-align: center; /* Center text */
+  background-color: #f9f9f9; /* Light background for tabs */
+  border: 1px solid #e0e0e0; /* Add a border around each tab */
+  border-bottom: none; /* Remove bottom border to connect with active tab */
+  border-radius: 8px 8px 0 0; /* Add rounded corners to the top */
+  margin-right: 5px; /* Add spacing between tabs */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth hover and active effects */
+}
+
+.tab-item:hover {
+  background-color: #e0f7fa; /* Light blue hover effect */
+  transform: translateY(-2px); /* Slight lift on hover */
 }
 
 .tab-item.active {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #ffffff; /* White background for active tab */
+  color: #007bff; /* Blue text for active tab */
+  font-weight: bold; /* Make active tab text bold */
+  border-bottom: 1px solid #ffffff; /* Seamless connection with content */
 }
 
 .tab-content {
   /* margin-top: 0px; */
-  color: #9e9ea4;
+  color: #000000; /* Adjust text color for better contrast */
   flex-grow: 1; /* Ensure it grows to fill available space */
   overflow-y: auto; /* Allow vertical scrolling for tab content */
   max-height: calc(80vh - 350px); /* Limit height to prevent overlapping with Registered Trackers */
   padding: 10px; /* Add padding for better spacing */
   scrollbar-width: thin; /* For Firefox: Make the scrollbar thinner */
   scrollbar-color: #888 #444; /* For Firefox: Set scrollbar colors */
+  background-color: #ffffff; /* Set Tab Content background to white */
+  border: 1px solid #e0e0e0; /* Optional: Add a border for separation */
 }
 
 .tab-content::-webkit-scrollbar {
@@ -285,16 +373,19 @@ body {
 .main-cards {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 20px;
-  margin: 15px 0;
+  gap: 15px; /* Adjust gap between cards */
+  margin: -55px 0;
+  padding-bottom: 50px;
 }
 
 .card {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding: 8px 15px;
+  padding: 5px 10px; /* Reduce padding inside the cards */
   border-radius: 5px;
+  height: auto; /* Allow the height to adjust dynamically */
+  min-height: 80px; /* Set a minimum height for consistency */
 }
 
 .card:first-child {
@@ -320,7 +411,17 @@ body {
 }
 
 .card-inner > .card_icon {
-  font-size: 25px;
+  font-size: 18px; /* Adjust icon size */
+}
+
+.card h1 {
+  font-size: 16px; /* Reduce the size of the main number */
+  margin: 5px 0; /* Adjust margin for spacing */
+}
+
+.card-inner h3 {
+  font-size: 12px; /* Reduce the size of the card title */
+  margin: 0; /* Remove extra margin */
 }
 
 .charts {
@@ -726,6 +827,21 @@ body {
   background-color: darkgreen;
 }
 /* End Shipment Creation Form */
+
+/* Tooltip */
+.custom-tooltip {
+  background-color: #ffffff; /* Add white background */
+  color: #000000; /* Adjust text color for better contrast */
+  border: 1px solid #e0e0e0; /* Optional: Add a border for separation */
+  padding: 10px; /* Optional: Add padding for spacing */
+  border-radius: 4px; /* Optional: Add rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add subtle shadow */
+}
+
+.custom-tooltip p {
+  color: #000000; /* Set text color to black */
+  margin: 0; /* Remove extra margin for better spacing */
+}
 
 /* Medium <= 992px */
   

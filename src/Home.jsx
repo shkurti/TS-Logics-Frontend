@@ -174,21 +174,7 @@ function Home({ selectedTrackerId }) {
         </div>
       </div>
 
-      <div className="tracker-selection">
-        <label htmlFor="tracker-select">Select Tracker:</label>
-        <select
-          id="tracker-select"
-          onChange={(e) => handleTrackerSelection(e.target.value)}
-          defaultValue=""
-        >
-          <option value="" disabled>
-            -- Select a Tracker --
-          </option>
-          <option value="121212">Tracker 121212</option>
-          <option value="77777">Tracker 77777</option>
-          {/* Add more tracker options dynamically if needed */}
-        </select>
-      </div>
+
 
       <div className="map-container">
         <MapContainer center={[42.798939, -74.658409]} zoom={13} style={{ height: "400px", width: "100%" }}>
@@ -219,15 +205,42 @@ function Home({ selectedTrackerId }) {
             data={historicalData}
             margin={{
               top: 5,
-              right: 30,
-              left: 20,
+              right: 0,
+              left: -26,
               bottom: 5,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="timestamp" />
+            <XAxis dataKey="timestamp" tick={false} /> {/* Hide timestamps on X-axis */}
             <YAxis />
-            <Tooltip />
+            <Tooltip
+              formatter={(value, name, props) => {
+                const { payload } = props; // Access the data point
+                return [
+                  `${name === "temperature" ? "Temperature" : "Battery"}: ${value}${
+                    name === "temperature" ? "°C" : "%"
+                  }`,
+                  null, // No label for individual values
+                ];
+              }}
+              labelFormatter={(label) => [
+                `Timestamp: ${label}`, // Display timestamp first
+              ]}
+              content={({ payload }) => {
+                if (!payload || payload.length === 0) return null;
+                const timestamp = payload[0]?.payload?.timestamp || "N/A";
+                const temperature = payload.find((p) => p.name === "temperature")?.value || "N/A";
+                const battery = payload.find((p) => p.name === "battery")?.value || "N/A";
+
+                return (
+                  <div className="custom-tooltip">
+                    <p>{`Timestamp: ${timestamp}`}</p>
+                    <p>{`Temperature: ${temperature}°C`}</p>
+                    <p>{`Battery: ${battery}%`}</p>
+                  </div>
+                );
+              }}
+            />
             <Legend />
             <Line type="monotone" dataKey="temperature" stroke="#8884d8" activeDot={{ r: 8 }} />
             <Line type="monotone" dataKey="battery" stroke="#82ca9d" />

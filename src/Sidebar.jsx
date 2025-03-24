@@ -153,9 +153,17 @@ function Sidebar({ isCollapsed, toggleSidebar, setSelectedTrackerId }) {
                   <div>
                     <h4>Temperature Over Time</h4>
                     <ResponsiveContainer width="100%" height={200}>
-                      <LineChart data={historicalData}>
+                      <LineChart
+                        data={historicalData}
+                        margin={{
+                          top: 5,
+                          right: 20,
+                          left: -30, // Increase left margin
+                          bottom: 5,
+                        }}
+                      >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="timestamp" />
+                        <XAxis dataKey="timestamp" tick={false} /> {/* Remove timestamps from X-axis */}
                         <YAxis />
                         <Tooltip />
                         <Line type="monotone" dataKey="temperature" stroke="#8884d8" />
@@ -163,9 +171,17 @@ function Sidebar({ isCollapsed, toggleSidebar, setSelectedTrackerId }) {
                     </ResponsiveContainer>
                     <h4>Battery Level Over Time</h4>
                     <ResponsiveContainer width="100%" height={200}>
-                      <LineChart data={historicalData}>
+                      <LineChart
+                        data={historicalData}
+                        margin={{
+                          top: 5,
+                          right: 20,
+                          left: -30, // Increase left margin
+                          bottom: 5,
+                        }}
+                      >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="timestamp" />
+                        <XAxis dataKey="timestamp" tick={false} /> {/* Remove timestamps from X-axis */}
                         <YAxis />
                         <Tooltip />
                         <Line type="monotone" dataKey="battery" stroke="#82ca9d" />
