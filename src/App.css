@@ -180,7 +180,7 @@ body {
 }
 
 .tracker-list-scrollable {
-  height: 100%; /* Ensure it fills the wrapper's height */
+  height: 68%; /* Ensure it fills the wrapper's height */
   overflow-y: auto; /* Enable vertical scrolling */
   padding: 10px;
   background-color: #263043; /* Match the sidebar background */
@@ -235,11 +235,11 @@ body {
 }
 
 .tab-content {
-  margin-top: 20px;
+  /* margin-top: 0px; */
   color: #9e9ea4;
   flex-grow: 1; /* Ensure it grows to fill available space */
   overflow-y: auto; /* Allow vertical scrolling for tab content */
-  max-height: calc(90vh - 350px); /* Limit height to prevent overlapping with Registered Trackers */
+  max-height: calc(80vh - 350px); /* Limit height to prevent overlapping with Registered Trackers */
   padding: 10px; /* Add padding for better spacing */
   scrollbar-width: thin; /* For Firefox: Make the scrollbar thinner */
   scrollbar-color: #888 #444; /* For Firefox: Set scrollbar colors */
