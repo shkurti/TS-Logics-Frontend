@@ -1,10 +1,98 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BsFillArchiveFill, BsGrid3X3GapFill, BsPeopleFill, BsFillGearFill } from "react-icons/bs";
-import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
+import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-function Home() {
+// Component to adjust the map view to fit the route
+function FitBounds({ route }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (route.length > 0) {
+      const bounds = route.map(([lat, lng]) => [lat, lng]); // Convert route to bounds
+      map.fitBounds(bounds); // Adjust the map view to fit the route
+    }
+  }, [route, map]);
+
+  return null;
+}
+
+function Home({ selectedTrackerId }) {
+  const [route, setRoute] = useState([]); // Store the route for the selected tracker
+  const [historicalData, setHistoricalData] = useState([]); // Store historical data for charts
+
+  useEffect(() => {
+    if (selectedTrackerId) {
+      // Fetch historical geolocation and chart data for the selected tracker
+      fetch(`http://localhost:8000/tracker_data/${selectedTrackerId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data && data.historical_data) {
+            const geolocationData = data.historical_data
+              .filter((record) => record.latitude !== "N/A" && record.longitude !== "N/A")
+              .map((record) => [parseFloat(record.latitude), parseFloat(record.longitude)]); // Ensure values are numbers
+            const chartData = data.historical_data.map((record) => ({
+              timestamp: record.timestamp,
+              temperature: record.temperature,
+              battery: record.battery,
+            }));
+            setRoute(geolocationData);
+            setHistoricalData(chartData);
+          } else {
+            console.warn("No historical data found for tracker:", selectedTrackerId);
+            setRoute([]);
+            setHistoricalData([]);
+          }
+        })
+        .catch((error) => console.error("Error fetching geolocation data:", error));
+    }
+  }, [selectedTrackerId]); // Trigger when selectedTrackerId changes
+
+  useEffect(() => {
+    // WebSocket for real-time updates
+    const ws = new WebSocket('ws://localhost:8000/ws');
+    ws.onopen = () => console.log('WebSocket connection established');
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log('WebSocket message received:', message); // Debug log
+      if (message.operationType === 'insert' && message.data.tracker_id === selectedTrackerId) {
+        const { Lat, Lng } = message.geolocation || {};
+        const newRecord = message.data.historical_data?.slice(-1)[0]; // Get the latest record
+
+        // Update the map route
+        if (Lat && Lng) {
+          setRoute((prevRoute) => [...prevRoute, [parseFloat(Lat), parseFloat(Lng)]]); // Append new location to the route
+        }
+
+        // Update the chart data
+        if (newRecord && newRecord.timestamp && newRecord.temperature !== undefined && newRecord.battery !== undefined) {
+          setHistoricalData((prevData) => {
+            // Check if the new record already exists in the historical data
+            const exists = prevData.some((record) => record.timestamp === newRecord.timestamp);
+            if (!exists) {
+              return [...prevData, newRecord]; // Append only if it doesn't already exist
+            }
+            return prevData; // Return the existing data if the record already exists
+          });
+        }
+      }
+    };
+    ws.onerror = (error) => console.error('WebSocket error:', error);
+    ws.onclose = () => console.log('WebSocket connection closed');
+
+    return () => ws.close();
+  }, [selectedTrackerId]);
+
+  const handleTrackerSelection = (trackerId) => {
+    setSelectedTrackerId(trackerId); // Dynamically set the selected tracker ID
+  };
+
   const data = [
     {
       name: 'Page A',
@@ -86,43 +174,49 @@ function Home() {
         </div>
       </div>
 
+      <div className="tracker-selection">
+        <label htmlFor="tracker-select">Select Tracker:</label>
+        <select
+          id="tracker-select"
+          onChange={(e) => handleTrackerSelection(e.target.value)}
+          defaultValue=""
+        >
+          <option value="" disabled>
+            -- Select a Tracker --
+          </option>
+          <option value="121212">Tracker 121212</option>
+          <option value="77777">Tracker 77777</option>
+          {/* Add more tracker options dynamically if needed */}
+        </select>
+      </div>
+
       <div className="map-container">
-        <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "400px", width: "100%" }}>
+        <MapContainer center={[42.798939, -74.658409]} zoom={13} style={{ height: "400px", width: "100%" }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
-          <Marker position={[51.505, -0.09]}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
+          <FitBounds route={route} /> {/* Adjust the map view to fit the route */}
+          {route.length > 1 ? (
+            <>
+              <Polyline positions={route} color="blue" />
+              <Marker position={route[route.length - 1]}>
+                <Popup>Current Location</Popup>
+              </Marker>
+            </>
+          ) : route.length === 1 ? (
+            <Marker position={route[0]}>
+              <Popup>Only one location available</Popup>
+            </Marker>
+          ) : (
+            <p>No route data available</p>
+          )}
         </MapContainer>
       </div>
       <div className="charts">
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="pv" fill="#8884d8" />
-            <Bar dataKey="uv" fill="#82ca9d" />
-          </BarChart>
-        </ResponsiveContainer>
-
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="200%" height={300}>
           <LineChart
-            data={data}
+            data={historicalData}
             margin={{
               top: 5,
               right: 30,
@@ -131,12 +225,12 @@ function Home() {
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="timestamp" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+            <Line type="monotone" dataKey="temperature" stroke="#8884d8" activeDot={{ r: 8 }} />
+            <Line type="monotone" dataKey="battery" stroke="#82ca9d" />
           </LineChart>
         </ResponsiveContainer>
       </div>

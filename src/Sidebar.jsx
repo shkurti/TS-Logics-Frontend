@@ -7,25 +7,13 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Brush,
-  AreaChart,
-  Area,
   ResponsiveContainer,
 } from 'recharts';
 
-const data = [
-  { name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
-  { name: 'Page B', uv: 3000, pv: 1398, amt: 2210 },
-  { name: 'Page C', uv: 2000, pv: 9800, amt: 2290 },
-  { name: 'Page D', uv: 2780, pv: 3908, amt: 2000 },
-  { name: 'Page E', uv: 1890, pv: 4800, amt: 2181 },
-  { name: 'Page F', uv: 2390, pv: 3800, amt: 2500 },
-  { name: 'Page G', uv: 3490, pv: 4300, amt: 2100 },
-];
-
-function Sidebar({ isCollapsed, toggleSidebar }) {
+function Sidebar({ isCollapsed, toggleSidebar, setSelectedTrackerId }) {
   const [trackers, setTrackers] = useState([]);
   const [selectedTracker, setSelectedTracker] = useState(null);
+  const [historicalData, setHistoricalData] = useState([]); // State for historical data
   const [activeTab, setActiveTab] = useState('Details'); // Track the active tab
 
   useEffect(() => {
@@ -41,8 +29,63 @@ function Sidebar({ isCollapsed, toggleSidebar }) {
       .catch((error) => console.error('Error fetching trackers:', error));
   }, []);
 
+  useEffect(() => {
+    // WebSocket for real-time updates
+    const ws = new WebSocket('ws://localhost:8000/ws');
+    ws.onopen = () => console.log('WebSocket connection established');
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log('WebSocket message received:', message); // Debug log
+      if (message.operationType === 'insert') {
+        const { tracker_id, historical_data } = message.data;
+
+        // Update the tracker list dynamically
+        setTrackers((prevTrackers) => {
+          const trackerExists = prevTrackers.some((tracker) => tracker.tracker_id === tracker_id);
+          if (!trackerExists) {
+            return [...prevTrackers, message.data];
+          }
+          return prevTrackers.map((tracker) =>
+            tracker.tracker_id === tracker_id ? message.data : tracker
+          );
+        });
+
+        // Append real-time data to the historical data if the tracker is selected
+        if (selectedTracker?.tracker_id === tracker_id && historical_data) {
+          const newRecords = historical_data.filter((record) => {
+            // Check if the record already exists in the historical data
+            return !historicalData.some((existingRecord) => existingRecord.timestamp === record.timestamp);
+          });
+
+          setHistoricalData((prevData) => [...prevData, ...newRecords]); // Append only new records
+        }
+      }
+    };
+    ws.onerror = (error) => console.error('WebSocket error:', error);
+    ws.onclose = () => console.log('WebSocket connection closed');
+
+    return () => ws.close();
+  }, [selectedTracker, historicalData]);
+
   const handleTrackerSelect = (tracker) => {
     setSelectedTracker(tracker); // Set the selected tracker
+    setSelectedTrackerId(tracker.tracker_id); // Update the selected tracker ID in App state
+    fetch(`http://localhost:8000/tracker_data/${tracker.tracker_id}`) // Fetch historical data
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data && data.historical_data) {
+          setHistoricalData(data.historical_data);
+        } else {
+          console.warn('No historical data found for tracker:', tracker.tracker_id);
+          setHistoricalData([]);
+        }
+      })
+      .catch((error) => console.error('Error fetching historical data:', error));
   };
 
   const handleTabClick = (tab) => {
@@ -65,7 +108,7 @@ function Sidebar({ isCollapsed, toggleSidebar }) {
                     className={`tracker-item ${selectedTracker?.tracker_id === tracker.tracker_id ? 'selected' : ''}`}
                     onClick={() => handleTrackerSelect(tracker)}
                   >
-                    <p>{tracker.tracker_name}</p> {/* Display only the tracker name */}
+                    <p>{tracker.tracker_name}</p>
                   </div>
                 ))}
               </div>
@@ -106,49 +149,31 @@ function Sidebar({ isCollapsed, toggleSidebar }) {
                     <p><strong>Model:</strong> {selectedTracker.model_number}</p>
                   </div>
                 )}
-                {activeTab === 'Sensors' && (
+                {activeTab === 'Sensors' && historicalData.length > 0 ? (
                   <div>
+                    <h4>Temperature Over Time</h4>
                     <ResponsiveContainer width="100%" height={200}>
-                      <LineChart
-                        data={data}
-                        syncId="anyId"
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                      >
+                      <LineChart data={historicalData}>
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
+                        <XAxis dataKey="timestamp" />
                         <YAxis />
                         <Tooltip />
-                        <Line type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
+                        <Line type="monotone" dataKey="temperature" stroke="#8884d8" />
                       </LineChart>
                     </ResponsiveContainer>
+                    <h4>Battery Level Over Time</h4>
                     <ResponsiveContainer width="100%" height={200}>
-                      <LineChart
-                        data={data}
-                        syncId="anyId"
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                      >
+                      <LineChart data={historicalData}>
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
+                        <XAxis dataKey="timestamp" />
                         <YAxis />
                         <Tooltip />
-                        <Line type="monotone" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" />
-                        <Brush />
+                        <Line type="monotone" dataKey="battery" stroke="#82ca9d" />
                       </LineChart>
-                    </ResponsiveContainer>
-                    <ResponsiveContainer width="100%" height={200}>
-                      <AreaChart
-                        data={data}
-                        syncId="anyId"
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Area type="monotone" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" />
-                      </AreaChart>
                     </ResponsiveContainer>
                   </div>
+                ) : (
+                  activeTab === 'Sensors' && <p>No sensor data available for this tracker.</p>
                 )}
                 {activeTab === 'Alerts' && <div>Alerts content</div>}
                 {activeTab === 'Reports' && <div>Reports content</div>}
