@@ -492,6 +492,10 @@ body {
 .tabs {
   display: flex;
   margin-bottom: 20px;
+  background-color: #ffffff; /* Set tabs container background to white */
+  border: 1px solid #e0e0e0; /* Optional: Add a border for separation */
+  border-radius: 8px; /* Add rounded corners */
+  padding: 10px; /* Add padding for spacing */
 }
 
 .tab {
@@ -499,13 +503,24 @@ body {
   padding: 10px;
   cursor: pointer;
   text-align: center;
-  background-color: #263043;
-  color: #9e9ea4;
-  border: none;
+  background-color: #ffffff; /* Set individual tab background to white */
+  color: #000000; /* Adjust text color for better contrast */
+  border: 1px solid #e0e0e0; /* Add a border around each tab */
+  border-radius: 5px; /* Add rounded corners */
+  margin-right: 5px; /* Add spacing between tabs */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth hover and active effects */
+}
+
+.tab:hover {
+  background-color: #f5f5f5; /* Light gray hover effect */
+  transform: translateY(-2px); /* Slight lift on hover */
 }
 
 .tab.active {
-  background-color: #1d2634;
+  background-color: #e0f7fa; /* Light blue background for active tab */
+  color: #007bff; /* Blue text for active tab */
+  font-weight: bold; /* Make active tab text bold */
+  border: 1px solid #007bff; /* Highlight border for active tab */
 }
 
 .dropdowns {
@@ -521,17 +536,40 @@ body {
 
 .shipments-table {
   overflow-x: auto;
+  border-radius: 8px; /* Add rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+  background-color: #ffffff; /* Set table background to white */
 }
 
 .shipments-table table {
   width: 100%;
   border-collapse: collapse;
+  border-radius: 8px; /* Ensure corners are rounded */
+  overflow: hidden; /* Prevent content from overflowing rounded corners */
 }
 
-.shipments-table th, .shipments-table td {
-  padding: 10px;
-  border: 1px solid #9e9ea4;
+.shipments-table th {
+  background-color: #f9f9f9; /* Light gray background for header */
+  color: #333333; /* Darker text for better contrast */
+  font-weight: bold;
   text-align: left;
+  padding: 12px; /* Add padding for spacing */
+  border-bottom: 2px solid #e0e0e0; /* Add a bottom border */
+}
+
+.shipments-table td {
+  padding: 10px; /* Add padding for spacing */
+  color: #666666; /* Lighter text color */
+  border-bottom: 1px solid #e0e0e0; /* Add a separator between rows */
+}
+
+.shipments-table tr:hover {
+  background-color: #f5f5f5; /* Light gray hover effect */
+  cursor: pointer; /* Indicate clickable rows */
+}
+
+.shipments-table tr:last-child td {
+  border-bottom: none; /* Remove border for the last row */
 }
 
 .shipments-map-container {
@@ -564,7 +602,9 @@ body {
   left: 0;
   top: 0;
   bottom: 0;
-  background-color: #263043;
+  background-color: #ffffff; /* Set left panel background to white */
+  color: #000000; /* Adjust text color for better contrast */
+  border-right: 1px solid #e0e0e0; /* Optional: Add a border for separation */
   z-index: 1000;
 }
 
@@ -633,26 +673,45 @@ body {
 
 .trackers-table {
   overflow-x: auto;
+  border-radius: 8px; /* Add rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+  background-color: #ffffff; /* Set table background to white */
 }
 
 .trackers-table table {
   width: 100%;
   border-collapse: collapse;
+  border-radius: 8px; /* Ensure corners are rounded */
+  overflow: hidden; /* Prevent content from overflowing rounded corners */
 }
 
-.trackers-table th, .trackers-table td {
-  padding: 10px;
-  border: 1px solid #9e9ea4;
+.trackers-table th {
+  background-color: #f9f9f9; /* Light gray background for header */
+  color: #333333; /* Darker text for better contrast */
+  font-weight: bold;
   text-align: left;
+  padding: 12px; /* Add padding for spacing */
+  border-bottom: 2px solid #e0e0e0; /* Add a bottom border */
 }
 
-.trackers-table .clickable {
-  color: #007bff;
-  cursor: pointer;
+.trackers-table td {
+  padding: 10px; /* Add padding for spacing */
+  color: #666666; /* Lighter text color */
+  border-bottom: 1px solid #e0e0e0; /* Add a separator between rows */
 }
 
-.trackers-table .clickable:hover {
-  text-decoration: underline;
+.trackers-table tr:hover {
+  background-color: #f5f5f5; /* Light gray hover effect */
+  cursor: pointer; /* Indicate clickable rows */
+}
+
+.trackers-table tr.selected {
+  background-color: #e0f7fa; /* Highlight selected row */
+  border-left: 4px solid #007bff; /* Add a blue accent for selection */
+}
+
+.trackers-table tr:last-child td {
+  border-bottom: none; /* Remove border for the last row */
 }
 
 .pagination {
@@ -677,10 +736,12 @@ body {
 
 /* Tracker Registration Form */
 .tracker-form {
-  background-color: #263043;
+  background-color: #ffffff; /* Set form background to white */
+  color: #000000; /* Adjust text color for better contrast */
+  border: 1px solid #e0e0e0; /* Optional: Add a border for separation */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add subtle shadow */
   padding: 20px;
   border-radius: 5px;
-  color: #9e9ea4;
 }
 
 .tracker-form h2 {
@@ -704,8 +765,8 @@ body {
   padding: 10px;
   border: 1px solid #9e9ea4;
   border-radius: 5px;
-  background-color: #1d2634;
-  color: white;
+  background-color: #ffffff; /* Set form fields background to white */
+  color: #000000; /* Adjust text color for better contrast */
 }
 
 .form-actions {
@@ -743,15 +804,17 @@ body {
 
 /* Shipment Creation Form */
 .shipment-form {
-  background-color: #263043;
+  background-color: #ffffff; /* Set form background to white */
+  color: #000000; /* Adjust text color for better contrast */
+  border: 1px solid #e0e0e0; /* Optional: Add a border for separation */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add subtle shadow */
   padding: 20px;
   border-radius: 5px;
-  color: #9e9ea4;
 }
 
 .shipment-form h2 {
   margin-bottom: 20px;
-  color: white;
+  color: #000000; /* Set text color to black */
 }
 
 .leg-section {
@@ -782,8 +845,8 @@ body {
   padding: 10px;
   border: 1px solid #9e9ea4;
   border-radius: 5px;
-  background-color: #1d2634;
-  color: white;
+  background-color: #ffffff; /* Set form fields background to white */
+  color: #000000; /* Adjust text color for better contrast */
 }
 
 .add-leg-button {
@@ -821,6 +884,7 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+
 }
 
 .submit-button:hover {
