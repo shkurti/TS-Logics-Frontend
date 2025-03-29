@@ -151,42 +151,46 @@ function Sidebar({ isCollapsed, toggleSidebar, setSelectedTrackerId }) {
                 )}
                 {activeTab === 'Sensors' && historicalData.length > 0 ? (
                   <div>
-                    <h4>Temperature Over Time</h4>
-                    <ResponsiveContainer width="100%" height={200}>
-                      <LineChart
-                        data={historicalData}
-                        margin={{
-                          top: 5,
-                          right: 20,
-                          left: -30, // Increase left margin
-                          bottom: 5,
-                        }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="timestamp" tick={false} /> {/* Remove timestamps from X-axis */}
-                        <YAxis />
-                        <Tooltip />
-                        <Line type="monotone" dataKey="temperature" stroke="#8884d8" />
-                      </LineChart>
-                    </ResponsiveContainer>
-                    <h4>Battery Level Over Time</h4>
-                    <ResponsiveContainer width="100%" height={200}>
-                      <LineChart
-                        data={historicalData}
-                        margin={{
-                          top: 5,
-                          right: 20,
-                          left: -30, // Increase left margin
-                          bottom: 5,
-                        }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="timestamp" tick={false} /> {/* Remove timestamps from X-axis */}
-                        <YAxis />
-                        <Tooltip />
-                        <Line type="monotone" dataKey="battery" stroke="#82ca9d" />
-                      </LineChart>
-                    </ResponsiveContainer>
+                    <div className="chart-container">
+                      <h4>Temperature Over Time</h4>
+                      <ResponsiveContainer width="100%" height={200}>
+                        <LineChart
+                          data={historicalData}
+                          margin={{
+                            top: 5,
+                            right: 20,
+                            left: -30, // Increase left margin
+                            bottom: 5,
+                          }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="timestamp" tick={false} /> {/* Remove timestamps from X-axis */}
+                          <YAxis />
+                          <Tooltip />
+                          <Line type="monotone" dataKey="temperature" stroke="#8884d8" />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="chart-container">
+                      <h4>Battery Level Over Time</h4>
+                      <ResponsiveContainer width="100%" height={200}>
+                        <LineChart
+                          data={historicalData}
+                          margin={{
+                            top: 5,
+                            right: 20,
+                            left: -30, // Increase left margin
+                            bottom: 5,
+                          }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="timestamp" tick={false} /> {/* Remove timestamps from X-axis */}
+                          <YAxis />
+                          <Tooltip />
+                          <Line type="monotone" dataKey="battery" stroke="#82ca9d" />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
                   </div>
                 ) : (
                   activeTab === 'Sensors' && <p>No sensor data available for this tracker.</p>

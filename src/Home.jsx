@@ -21,6 +21,10 @@ function FitBounds({ route }) {
 function Home({ selectedTrackerId }) {
   const [route, setRoute] = useState([]); // Store the route for the selected tracker
   const [historicalData, setHistoricalData] = useState([]); // Store historical data for charts
+  const [totalTrackers, setTotalTrackers] = useState(0);
+  const [activeTrackers, setActiveTrackers] = useState(0);
+  const [inactiveTrackers, setInactiveTrackers] = useState(0);
+  const [alerts, setAlerts] = useState(0);
 
   useEffect(() => {
     if (selectedTrackerId) {
@@ -89,6 +93,29 @@ function Home({ selectedTrackerId }) {
     return () => ws.close();
   }, [selectedTrackerId]);
 
+  useEffect(() => {
+    // Fetch fleet metrics from the backend
+    fetch('http://localhost:8000/trackers')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const total = data.length;
+        const active = data.filter((tracker) => tracker.status === 'active').length;
+        const inactive = total - active;
+        const totalAlerts = data.reduce((sum, tracker) => sum + (tracker.alerts || 0), 0);
+
+        setTotalTrackers(total);
+        setActiveTrackers(active);
+        setInactiveTrackers(inactive);
+        setAlerts(totalAlerts);
+      })
+      .catch((error) => console.error('Error fetching fleet metrics:', error));
+  }, []);
+
   const handleTrackerSelection = (trackerId) => {
     setSelectedTrackerId(trackerId); // Dynamically set the selected tracker ID
   };
@@ -146,35 +173,33 @@ function Home({ selectedTrackerId }) {
       <div className="main-cards">
         <div className="card">
           <div className="card-inner">
-            <h3>Products</h3>
+            <h3>Total Trackers</h3>
             <BsFillArchiveFill className="card_icon" />
           </div>
-          <h1>300</h1>
+          <h1>{totalTrackers}</h1>
         </div>
         <div className="card">
           <div className="card-inner">
-            <h3>Categories</h3>
+            <h3>Active Trackers</h3>
             <BsGrid3X3GapFill className="card_icon" />
           </div>
-          <h1>300</h1>
+          <h1>{activeTrackers}</h1>
         </div>
         <div className="card">
           <div className="card-inner">
-            <h3>Customers</h3>
+            <h3>Inactive Trackers</h3>
             <BsPeopleFill className="card_icon" />
           </div>
-          <h1>300</h1>
+          <h1>{inactiveTrackers}</h1>
         </div>
         <div className="card">
           <div className="card-inner">
             <h3>Alerts</h3>
             <BsFillGearFill className="card_icon" />
           </div>
-          <h1>300</h1>
+          <h1>{alerts}</h1>
         </div>
       </div>
-
-
 
       <div className="map-container">
         <MapContainer center={[42.798939, -74.658409]} zoom={13} style={{ height: "400px", width: "100%" }}>

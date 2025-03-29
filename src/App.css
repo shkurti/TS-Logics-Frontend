@@ -372,56 +372,81 @@ body {
 
 .main-cards {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr); /* Keep 4 cards in a row */
   gap: 15px; /* Adjust gap between cards */
-  margin: -55px 0;
-  padding-bottom: 50px;
+  margin: -10px 10; /* Add margin for spacing */
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  padding: 5px 10px; /* Reduce padding inside the cards */
-  border-radius: 5px;
-  height: auto; /* Allow the height to adjust dynamically */
-  min-height: 80px; /* Set a minimum height for consistency */
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px; /* Keep padding consistent */
+  border-radius: 10px; /* Add rounded corners */
+  background-color: #ffffff; /* Set background to white */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add a modern shadow */
+  transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover effects */
+  height: 70px; /* Keep original height */
+  min-width: 200px; /* Keep original width */
 }
 
-.card:first-child {
-  background-color: #2962ff;
-}
-
-.card:nth-child(2) {
-  background-color: #ff6d00;
-}
-
-.card:nth-child(3) {
-  background-color: #2e7d32;
-}
-
-.card:nth-child(4) {
-  background-color: #d50000;
+.card:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
 }
 
 .card-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.card-inner > .card_icon {
-  font-size: 18px; /* Adjust icon size */
-}
-
-.card h1 {
-  font-size: 16px; /* Reduce the size of the main number */
-  margin: 5px 0; /* Adjust margin for spacing */
+  width: 100%; /* Ensure content spans the card width */
+  margin-bottom: 10px; /* Add spacing between title and icon */
 }
 
 .card-inner h3 {
-  font-size: 12px; /* Reduce the size of the card title */
-  margin: 0; /* Remove extra margin */
+  font-size: 16px; /* Keep font size consistent */
+  color: #333333; /* Use a darker color for contrast */
+  margin: 0;
+}
+
+.card-inner > .card_icon {
+  font-size: 22px; /* Keep icon size consistent */
+  color: #007bff; /* Use a consistent color for icons */
+}
+
+.card h1 {
+  font-size: 28px; /* Keep the size of the main number */
+  color: #555555; /* Use a neutral color for the number */
+  margin: 0;
+  font-weight: bold; /* Make the number bold */
+}
+
+/* Add color themes for individual cards */
+.card:first-child {
+  background-color: #e3f2fd; /* Light blue */
+  color: #2962ff;
+}
+
+.card:nth-child(2) {
+  background-color: #fff3e0; /* Light orange */
+  color: #ff6d00;
+}
+
+.card:nth-child(3) {
+  background-color: #e8f5e9; /* Light green */
+  color: #2e7d32;
+}
+
+.card:nth-child(4) {
+  background-color: #ffebee; /* Light red */
+  color: #d50000;
+}
+
+/* Add subtle hover animations for icons */
+.card-inner > .card_icon:hover {
+  transform: scale(1.2); /* Slightly enlarge the icon on hover */
+  transition: transform 0.2s ease-in-out;
 }
 
 .charts {
@@ -429,12 +454,30 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   margin-top: 20px; /* Adjust margin to reduce space */
-  height: 300px;
+  padding: 20px; /* Add padding for better spacing */
+  border: 1px solid #e0e0e0; /* Add a light border */
+  border-radius: 10px; /* Add rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Add a subtle shadow */
+  background-color: #ffffff; /* Set background to white */
+  overflow: hidden; /* Ensure content stays within rounded corners */
+}
+
+.chart-container {
+  padding: 15px; /* Add padding for spacing */
+  margin-bottom: 20px; /* Add margin between charts */
+  border: 1px solid #e0e0e0; /* Add a light border */
+  border-radius: 10px; /* Add rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  background-color: #ffffff; /* Set background to white */
 }
 
 .map-container {
   margin: 20px 0;
   z-index: 1; /* Ensure the map is below the sidebar */
+  border: 1px solid #e0e0e0; /* Add a light border */
+  border-radius: 10px; /* Add rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Add a subtle shadow */
+  overflow: hidden; /* Ensure content stays within rounded corners */
 }
 
 /* End Main  */
