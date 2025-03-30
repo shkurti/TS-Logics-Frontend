@@ -262,7 +262,10 @@ function Trackers() {
             <>
               <MapMover position={selectedTracker.location.split(', ').map(Number)} />
               {/* <Marker position={selectedTracker.location.split(', ').map(Number)}> */}
-              <Marker position={route[route.length - 1]} icon={customIcon}>
+              <Marker 
+                      position={selectedTracker.location.split(', ').map(Number)} 
+                      icon={customIcon} // Add the customIcon here
+                    >
                 <Popup>
                   <strong>{selectedTracker.tracker_name}</strong><br />
                   Battery: {selectedTracker.batteryLevel}%<br />
