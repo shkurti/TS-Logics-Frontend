@@ -204,8 +204,8 @@ function Home({ selectedTrackerId }) {
       <div className="map-container">
         <MapContainer center={[42.798939, -74.658409]} zoom={13} style={{ height: "400px", width: "100%" }}>
           <TileLayer
-            url="httpss://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="httpss://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           <FitBounds route={route} /> {/* Adjust the map view to fit the route */}
           {route.length > 1 ? (
