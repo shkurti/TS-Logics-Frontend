@@ -18,7 +18,7 @@ function Sidebar({ isCollapsed, toggleSidebar, setSelectedTrackerId }) {
 
   useEffect(() => {
     // Fetch the list of registered trackers
-    fetch('http://localhost:8000/trackers')
+    fetch('http://backend-ts-68222fd8cfc0.herokuapp.com/trackers')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -31,7 +31,7 @@ function Sidebar({ isCollapsed, toggleSidebar, setSelectedTrackerId }) {
 
   useEffect(() => {
     // WebSocket for real-time updates
-    const ws = new WebSocket('ws://localhost:8000/ws');
+    const ws = new WebSocket('ws://backend-ts-68222fd8cfc0.herokuapp.com/ws');
     ws.onopen = () => console.log('WebSocket connection established');
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -70,7 +70,7 @@ function Sidebar({ isCollapsed, toggleSidebar, setSelectedTrackerId }) {
   const handleTrackerSelect = (tracker) => {
     setSelectedTracker(tracker); // Set the selected tracker
     setSelectedTrackerId(tracker.tracker_id); // Update the selected tracker ID in App state
-    fetch(`http://localhost:8000/tracker_data/${tracker.tracker_id}`) // Fetch historical data
+    fetch(`http://backend-ts-68222fd8cfc0.herokuapp.com/tracker_data/${tracker.tracker_id}`) // Fetch historical data
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
