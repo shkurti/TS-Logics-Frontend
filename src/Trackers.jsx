@@ -28,10 +28,10 @@ function Trackers() {
 
   useEffect(() => {
     // Fetch initial list of trackers
-    fetch('http://backend-ts-68222fd8cfc0.herokuapp.com/trackers')
+    fetch('https://backend-ts-68222fd8cfc0.herokuapp.com/trackers')
       .then(response => {
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`https error! status: ${response.status}`);
         }
         return response.json();
       })
@@ -93,7 +93,7 @@ function Trackers() {
     e.preventDefault(); // Prevent default form submission behavior
     console.log('Registering tracker with data:', newTracker); // Log the data being sent
     try {
-      const response = await fetch('http://backend-ts-68222fd8cfc0.herokuapp.com/register_tracker', {
+      const response = await fetch('https://backend-ts-68222fd8cfc0.herokuapp.com/register_tracker', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -245,8 +245,8 @@ function Trackers() {
       <div className="trackers-map-container">
         <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "100vh", width: "100%" }}>
           <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="httpss://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="httpss://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           {selectedTracker && (
             <>

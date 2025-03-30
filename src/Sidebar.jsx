@@ -18,10 +18,10 @@ function Sidebar({ isCollapsed, toggleSidebar, setSelectedTrackerId }) {
 
   useEffect(() => {
     // Fetch the list of registered trackers
-    fetch('http://backend-ts-68222fd8cfc0.herokuapp.com/trackers')
+    fetch('https://backend-ts-68222fd8cfc0.herokuapp.com/trackers')
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`https error! status: ${response.status}`);
         }
         return response.json();
       })
@@ -70,10 +70,10 @@ function Sidebar({ isCollapsed, toggleSidebar, setSelectedTrackerId }) {
   const handleTrackerSelect = (tracker) => {
     setSelectedTracker(tracker); // Set the selected tracker
     setSelectedTrackerId(tracker.tracker_id); // Update the selected tracker ID in App state
-    fetch(`http://backend-ts-68222fd8cfc0.herokuapp.com/tracker_data/${tracker.tracker_id}`) // Fetch historical data
+    fetch(`https://backend-ts-68222fd8cfc0.herokuapp.com/tracker_data/${tracker.tracker_id}`) // Fetch historical data
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`https error! status: ${response.status}`);
         }
         return response.json();
       })

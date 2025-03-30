@@ -29,10 +29,10 @@ function Home({ selectedTrackerId }) {
   useEffect(() => {
     if (selectedTrackerId) {
       // Fetch historical geolocation and chart data for the selected tracker
-      fetch(`http://backend-ts-68222fd8cfc0.herokuapp.com/tracker_data/${selectedTrackerId}`)
+      fetch(`https://backend-ts-68222fd8cfc0.herokuapp.com/tracker_data/${selectedTrackerId}`)
         .then((response) => {
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`https error! status: ${response.status}`);
           }
           return response.json();
         })
@@ -60,7 +60,7 @@ function Home({ selectedTrackerId }) {
 
   useEffect(() => {
     // WebSocket for real-time updates
-    const ws = new WebSocket('ws://backend-ts-68222fd8cfc0.herokuapp.com/ws');
+    const ws = new WebSocket('wss://backend-ts-68222fd8cfc0.herokuapp.com/ws');
     ws.onopen = () => console.log('WebSocket connection established');
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -95,10 +95,10 @@ function Home({ selectedTrackerId }) {
 
   useEffect(() => {
     // Fetch fleet metrics from the backend
-    fetch('http://backend-ts-68222fd8cfc0.herokuapp.com/trackers')
+    fetch('https://backend-ts-68222fd8cfc0.herokuapp.com/trackers')
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`https error! status: ${response.status}`);
         }
         return response.json();
       })
@@ -204,8 +204,8 @@ function Home({ selectedTrackerId }) {
       <div className="map-container">
         <MapContainer center={[42.798939, -74.658409]} zoom={13} style={{ height: "400px", width: "100%" }}>
           <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="httpss://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="httpss://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           <FitBounds route={route} /> {/* Adjust the map view to fit the route */}
           {route.length > 1 ? (
