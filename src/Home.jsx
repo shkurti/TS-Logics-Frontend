@@ -29,7 +29,7 @@ function Home({ selectedTrackerId }) {
   useEffect(() => {
     if (selectedTrackerId) {
       // Fetch historical geolocation and chart data for the selected tracker
-      fetch(`http://localhost:8000/tracker_data/${selectedTrackerId}`)
+      fetch(`http://backend-ts-68222fd8cfc0.herokuapp.com/tracker_data/${selectedTrackerId}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -60,7 +60,7 @@ function Home({ selectedTrackerId }) {
 
   useEffect(() => {
     // WebSocket for real-time updates
-    const ws = new WebSocket('ws://localhost:8000/ws');
+    const ws = new WebSocket('ws://backend-ts-68222fd8cfc0.herokuapp.com/ws');
     ws.onopen = () => console.log('WebSocket connection established');
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -95,7 +95,7 @@ function Home({ selectedTrackerId }) {
 
   useEffect(() => {
     // Fetch fleet metrics from the backend
-    fetch('http://localhost:8000/trackers')
+    fetch('http://backend-ts-68222fd8cfc0.herokuapp.com/trackers')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
