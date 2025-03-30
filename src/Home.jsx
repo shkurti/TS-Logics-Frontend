@@ -4,6 +4,16 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { MapContainer, TileLayer, Polyline, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
+// Define a custom marker icon
+const customIcon = L.icon({
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png", // Default Leaflet marker
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconSize: [25, 41], // Default size
+  iconAnchor: [12, 41], // Bottom center aligns with the point
+  popupAnchor: [1, -34], // Adjust popup positioning
+});
+
 // Component to adjust the map view to fit the route
 function FitBounds({ route }) {
   const map = useMap();
@@ -211,7 +221,10 @@ function Home({ selectedTrackerId }) {
           {route.length > 1 ? (
             <>
               <Polyline positions={route} color="blue" />
-              <Marker position={route[route.length - 1]}>
+              {/* <Marker position={route[route.length - 1]}>
+                <Popup>Current Location</Popup>
+              </Marker> */}
+              <Marker position={route[route.length - 1]} icon={customIcon}>
                 <Popup>Current Location</Popup>
               </Marker>
             </>
