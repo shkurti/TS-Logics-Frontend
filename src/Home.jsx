@@ -229,9 +229,13 @@ function Home({ selectedTrackerId }) {
               </Marker>
             </>
           ) : route.length === 1 ? (
-            <Marker position={route[0]}>
+            // <Marker position={route[0]}>
+            //   <Popup>Only one location available</Popup>
+            // </Marker>
+            <Marker position={route[0]} icon={customIcon}>
               <Popup>Only one location available</Popup>
             </Marker>
+
           ) : (
             <p>No route data available</p>
           )}
