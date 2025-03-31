@@ -136,6 +136,21 @@ body {
   display: none;
 }
 
+.header-list.small-screen {
+  display: none; /* Hide by default */
+}
+
+.header-list.small-screen.show {
+  display: flex; /* Show when toggled */
+  flex-direction: column; /* Align items vertically */
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  background-color: #263043;
+  z-index: 10;
+}
+
 /* End Header  */
 
 /* Sidebar */
@@ -1045,5 +1060,13 @@ body {
 
   .header-list-item > a {
     color: #ffffff; /* Ensure links are visible */
+  }
+
+  .header-list.small-screen {
+    display: none; /* Hide by default on small screens */
+  }
+
+  .header-list.small-screen.show {
+    display: flex; /* Show the menu when toggled */
   }
 }

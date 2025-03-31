@@ -70,8 +70,8 @@ function Header({ OpenSidebar }) {
       <div className="categories-toggle" onClick={toggleCategories}>
         <BsJustify className="icon" />
       </div>
-      <ul className={`header-list ${showCategories ? 'show' : ''}`}>
-        {/* Menu items */}
+      <ul className={`header-list small-screen ${showCategories ? 'show' : ''}`}>
+        {/* Menu items for small screens */}
         <li className="header-list-item" onClick={toggleShipmentsDropdown}>
           <a href="#">
             <BsGrid1X2Fill className="icon" /> Shipments <BsChevronDown className="icon" />
