@@ -58,10 +58,15 @@ body {
 }
 
 .header-list {
-  display: flex;
+  display: flex; /* Ensure the menu is displayed in full screen */
+  flex-direction: row; /* Align items horizontally */
   list-style-type: none;
   padding: 0;
-  margin-left:350px; /* Adjust margin to move items to the right */
+  margin-left: 350px; /* Adjust margin to move items to the right */
+}
+
+.header-list.show {
+  display: flex; /* Show the menu when toggled */
 }
 
 .header-list-item {
@@ -1009,6 +1014,36 @@ body {
 
 @media screen and (max-width: 576px) {
   .header-left {
-    display: none;
+    display: none; /* Hide the header-left section */
+  }
+
+  .categories-toggle {
+    display: block; /* Show the toggle button */
+    cursor: pointer;
+  }
+
+  .header-list {
+    display: none; /* Hide the menu by default on small screens */
+  }
+
+  .header-list.show {
+    display: flex; /* Show the menu when toggled */
+    flex-direction: column; /* Align items vertically */
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #263043;
+    z-index: 10;
+  }
+
+  .header-list-item {
+    margin: 10px 0;
+    text-align: center;
+    color: #ffffff; /* Ensure text is visible on dark background */
+  }
+
+  .header-list-item > a {
+    color: #ffffff; /* Ensure links are visible */
   }
 }

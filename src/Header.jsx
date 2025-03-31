@@ -21,7 +21,7 @@ function Header({ OpenSidebar }) {
       </div>
       <div className="header-left">
         <BsFillGeoAltFill className="icon_header" /> TS-Logics
-        <ul className={`header-list ${showCategories ? 'show' : ''}`}>
+        <ul className="header-list">
           <li className="header-list-item" onClick={toggleShipmentsDropdown}>
             <a href="#">
               <BsGrid1X2Fill className="icon" /> Shipments <BsChevronDown className="icon" />
@@ -70,6 +70,47 @@ function Header({ OpenSidebar }) {
       <div className="categories-toggle" onClick={toggleCategories}>
         <BsJustify className="icon" />
       </div>
+      <ul className={`header-list ${showCategories ? 'show' : ''}`}>
+        {/* Menu items */}
+        <li className="header-list-item" onClick={toggleShipmentsDropdown}>
+          <a href="#">
+            <BsGrid1X2Fill className="icon" /> Shipments <BsChevronDown className="icon" />
+          </a>
+          {showShipmentsDropdown && (
+            <ul className="dropdown-menu">
+              <li className="dropdown-item"><Link to="/shipments">All Shipments</Link></li>
+              <li className="dropdown-item"><a href="#">Reports</a></li>
+              <li className="dropdown-item"><a href="#">Analysis</a></li>
+              <li className="dropdown-item"><a href="#">Create New Shipment</a></li>
+            </ul>
+          )}
+        </li>
+        <li className="header-list-item">
+          <Link to="/trackers">
+            <BsFillArchiveFill className="icon" /> Trackers
+          </Link>
+        </li>
+        <li className="header-list-item">
+          <a href="#">
+            <BsFillGrid3X3GapFill className="icon" /> Configure
+          </a>
+        </li>
+        <li className="header-list-item">
+          <a href="#">
+            <BsPeopleFill className="icon" /> Analytics
+          </a>
+        </li>
+        <li className="header-list-item">
+          <a href="#">
+            <BsListCheck className="icon" /> Admin
+          </a>
+        </li>
+        <li className="header-list-item">
+          <Link to="/monitoring">
+            <BsMenuButtonWideFill className="icon" /> Monitoring
+          </Link>
+        </li>
+      </ul>
     </header>
   );
 }
