@@ -3,6 +3,16 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import 'leaflet/dist/leaflet.css';
 
+// Define a custom marker icon
+const customIcon = L.icon({
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png", // Default Leaflet marker
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconSize: [25, 41], // Default size
+  iconAnchor: [12, 41], // Bottom center aligns with the point
+  popupAnchor: [1, -34], // Adjust popup positioning
+});
+
 // Component to move the map to the selected tracker's location
 function MapMover({ position }) {
   const map = useMap();
@@ -284,7 +294,10 @@ function Trackers() {
           {selectedTracker && (
             <>
               <MapMover position={selectedTracker.location.split(', ').map(Number)} />
-              <Marker position={selectedTracker.location.split(', ').map(Number)}>
+              <Marker 
+                      position={selectedTracker.location.split(', ').map(Number)} 
+                      icon={customIcon} // Add the customIcon here
+                    >
                 <Popup>
                   <strong>{selectedTracker.tracker_name}</strong><br />
                   Battery: {selectedTracker.batteryLevel}%<br />
