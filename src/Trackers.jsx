@@ -28,7 +28,7 @@ function Trackers() {
 
   useEffect(() => {
     // Fetch initial list of trackers
-    fetch('http://localhost:8000/trackers')
+    fetch('https://backend-ts-68222fd8cfc0.herokuapp.com/trackers')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -93,7 +93,7 @@ function Trackers() {
     e.preventDefault(); // Prevent default form submission behavior
     console.log('Registering tracker with data:', newTracker); // Log the data being sent
     try {
-      const response = await fetch('http://localhost:8000/register_tracker', {
+      const response = await fetch('https://backend-ts-68222fd8cfc0.herokuapp.com/register_tracker', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -140,7 +140,7 @@ function Trackers() {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:8000/delete_tracker/${selectedTracker.tracker_id}`, {
+      const response = await fetch(`https://backend-ts-68222fd8cfc0.herokuapp.com/delete_tracker/${selectedTracker.tracker_id}`, {
         method: "DELETE",
       });
 
