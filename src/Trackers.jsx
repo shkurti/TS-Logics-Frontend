@@ -3,16 +3,6 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import 'leaflet/dist/leaflet.css';
 
-// Define a custom marker icon
-const customIcon = L.icon({
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png", // Default Leaflet marker
-  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-  iconSize: [25, 41], // Default size
-  iconAnchor: [12, 41], // Bottom center aligns with the point
-  popupAnchor: [1, -34], // Adjust popup positioning
-});
-
 // Component to move the map to the selected tracker's location
 function MapMover({ position }) {
   const map = useMap();
@@ -38,10 +28,10 @@ function Trackers() {
 
   useEffect(() => {
     // Fetch initial list of trackers
-    fetch('https://backend-ts-68222fd8cfc0.herokuapp.com/trackers')
+    fetch('http://localhost:8000/trackers')
       .then(response => {
         if (!response.ok) {
-          throw new Error(`https error! status: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
       })
@@ -49,7 +39,7 @@ function Trackers() {
       .catch(error => console.error('Error fetching trackers:', error));
 
     // WebSocket for real-time updates
-    const ws = new WebSocket('wss://backend-ts-68222fd8cfc0.herokuapp.com/ws');
+    const ws = new WebSocket('ws://localhost:8000/ws');
     ws.onopen = () => console.log('WebSocket connection established');
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -103,7 +93,7 @@ function Trackers() {
     e.preventDefault(); // Prevent default form submission behavior
     console.log('Registering tracker with data:', newTracker); // Log the data being sent
     try {
-      const response = await fetch('https://backend-ts-68222fd8cfc0.herokuapp.com/register_tracker', {
+      const response = await fetch('http://localhost:8000/register_tracker', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -137,6 +127,36 @@ function Trackers() {
       }
     } catch (error) {
       console.error('Error:', error);
+    }
+  };
+
+  const handleDeleteTracker = async () => {
+    if (!selectedTracker) {
+      alert("Please select a tracker to delete.");
+      return;
+    }
+
+    const confirmDelete = window.confirm(`Are you sure you want to delete tracker "${selectedTracker.tracker_name}"?`);
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`http://localhost:8000/delete_tracker/${selectedTracker.tracker_id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("Tracker deleted successfully.");
+        setTrackers((prevTrackers) =>
+          prevTrackers.filter((tracker) => tracker.tracker_id !== selectedTracker.tracker_id)
+        );
+        setSelectedTracker(null); // Clear the selected tracker
+      } else {
+        const error = await response.json();
+        alert(`Failed to delete tracker: ${error.detail}`);
+      }
+    } catch (error) {
+      console.error("Error deleting tracker:", error);
+      alert("An error occurred while deleting the tracker.");
     }
   };
 
@@ -220,6 +240,9 @@ function Trackers() {
                   <button className="register-button" onClick={handleRegisterClick}>
                     Register New Tracker
                   </button>
+                  <button className="delete-button" onClick={handleDeleteTracker} disabled={!selectedTracker}>
+                    Delete Selected Tracker
+                  </button>
                 </div>
                 <div className="trackers-table">
                   <table>
@@ -261,11 +284,7 @@ function Trackers() {
           {selectedTracker && (
             <>
               <MapMover position={selectedTracker.location.split(', ').map(Number)} />
-              {/* <Marker position={selectedTracker.location.split(', ').map(Number)}> */}
-              <Marker 
-                      position={selectedTracker.location.split(', ').map(Number)} 
-                      icon={customIcon} // Add the customIcon here
-                    >
+              <Marker position={selectedTracker.location.split(', ').map(Number)}>
                 <Popup>
                   <strong>{selectedTracker.tracker_name}</strong><br />
                   Battery: {selectedTracker.batteryLevel}%<br />

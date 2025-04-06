@@ -734,6 +734,25 @@ body {
   background-color: darkgreen;
 }
 
+.delete-button {
+  background-color: red;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.delete-button:hover:not(:disabled) {
+  background-color: darkred;
+}
+
 .trackers-table {
   overflow-x: auto;
   border-radius: 8px; /* Add rounded corners */
